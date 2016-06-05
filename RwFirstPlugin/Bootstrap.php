@@ -29,9 +29,42 @@ class Shopware_Plugins_Frontend_RwFirstPlugin_Bootstrap extends Shopware_Compone
         $this->subscribeEvent('Enlight_Controller_Action_PostDispatchSecure_Frontend_Detail', 'onPostDispatchSecureFrontendDetail');
         $this->subscribeEvent('Enlight_Controller_Action_PreDispatch_Frontend_Detail', 'onPreDispatchFrontendDetail');
 
+        // Application Event
+        $this->subscribeEvent('Shopware_Modules_Articles_GetPromotionById_Start', 'onShopwareModulesArticlesGetPromotionByIdStart'); // notifyUntil (true|false)
+        $this->subscribeEvent('Shopware_Modules_Basket_AddArticle_CheckBasketForArticle', 'onShopwareModulesBasketAddArticleCheckBasketForArticle'); // notify (log or change object)
+        $this->subscribeEvent('Shopware_Modules_Basket_GetBasket_FilterSQL', 'onShopwareModulesBasketGetBasketFilter'); // filter (change return value)
+        // collect (Add To Array)
+
         return true;
     }
 
+    /**
+     * @param Enlight_Event_EventArgs $args
+     */
+    public function onShopwareModulesBasketGetBasketFilter(Enlight_Event_EventArgs $args)
+    {
+//        $sql = $args->getReturn();
+//        $sql = str_replace('BY id ASC, datum DESC', 'BY id DESC, datum ASC', $sql);
+//        $args->setReturn($sql);
+    }
+
+    /**
+     * @param Enlight_Event_EventArgs $args
+     */
+    public function onShopwareModulesBasketAddArticleCheckBasketForArticle(Enlight_Event_EventArgs $args)
+    {
+        $args->get('queryBuilder')->andWhere('false');
+    }
+
+    /**
+     * @param Enlight_Event_EventArgs $args
+     */
+    public function onShopwareModulesArticlesGetPromotionByIdStart(Enlight_Event_EventArgs $args)
+    {
+//        if( $args->get('value') !== 114 ) {
+//            return false;
+//        }
+    }
 
     public function onPreDispatchFrontendDetail(Enlight_Event_EventArgs $args)
     {

@@ -35,7 +35,39 @@ class Shopware_Plugins_Frontend_RwFirstPlugin_Bootstrap extends Shopware_Compone
         $this->subscribeEvent('Shopware_Modules_Basket_GetBasket_FilterSQL', 'onShopwareModulesBasketGetBasketFilter'); // filter (change return value)
         // collect (Add To Array)
 
+        // Hooks (Public/protected Method in ProxyClass)
+        $this->subscribeEvent('sArticles::sGetArticleCharts::after', 'onArticlesSGetArticleChartsAfter');
+        $this->subscribeEvent('sArticles::sGetArticleCharts::before', 'onArticlesSGetArticleChartsBefore');
+
+        $this->subscribeEvent('sArticles::sGetArticleCharts::replace', 'onArticlesSGetArticleChartsReplace', 1);
+        $this->subscribeEvent('sArticles::sGetArticleCharts::replace', 'onArticlesSGetArticleChartsReplace2', 2);
         return true;
+    }
+
+    /**
+     * @param Enlight_Hook_HookArgs $args
+     */
+    public function onArticlesSGetArticleChartsReplace2(Enlight_Hook_HookArgs $args)
+    {
+        //echo  __FUNCTION__ .' / '. __FILE__ .' / '. __LINE__  . '<br>';
+        $args->setReturn(
+            $args->get('class')->executeParent(
+                $args->getMethod(), $args->getArgs()
+            )
+        );
+    }
+
+    /**
+     * @param Enlight_Hook_HookArgs $args
+     */
+    public function onArticlesSGetArticleChartsReplace(Enlight_Hook_HookArgs $args)
+    {
+        //echo  __FUNCTION__ .' / '. __FILE__ .' / '. __LINE__  . '<br>';
+        $args->setReturn(
+            $args->get('class')->executeParent(
+                $args->getMethod(), $args->getArgs()
+            )
+        );
     }
 
     /**
